@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model name="" userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="2061" systemVersion="12E3067" minimumToolsVersion="Automatic" macOSVersion="Automatic" iOSVersion="Automatic">
+    <entity name="SBConversation" representedClassName="SBConversation" syncable="YES">
+        <attribute name="conversation_id" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="last_synced" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="latest_message" optional="YES" attributeType="Date" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="pubkey_a" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="pubkey_b" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="unread" optional="YES" attributeType="Boolean" syncable="YES"/>
+        <relationship name="messages" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="SBMessage" inverseName="conversation" inverseEntity="SBMessage" syncable="YES"/>
+    </entity>
+    <entity name="SBMessage" representedClassName="SBMessage" syncable="YES">
+        <attribute name="data" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="incoming" attributeType="Boolean" syncable="YES"/>
+        <attribute name="nonce" optional="YES" attributeType="Binary" syncable="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" syncable="YES"/>
+        <relationship name="conversation" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="SBConversation" inverseName="messages" inverseEntity="SBConversation" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="SBConversation" positionX="0" positionY="0" width="128" height="165"/>
+        <element name="SBMessage" positionX="0" positionY="0" width="128" height="120"/>
+    </elements>
+</model>
