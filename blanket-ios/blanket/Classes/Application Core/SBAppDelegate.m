@@ -47,6 +47,18 @@
             dispatch_sync(dispatch_get_main_queue(), ^{
                 [[NSNotificationCenter defaultCenter] postNotificationName:SBSodiumInitializedNotification object:self];
                 [SVProgressHUD showSuccessWithStatus:NSLocalizedString(@"STATUS_INITIALIZED_CRYPTO", @"Initialized cryptography subsystem")];
+                
+                if (![[[NSUserDefaults standardUserDefaults] stringForKey:SBBlanketUsernameKey] length]) {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"ENTER_YOUR_NAME_TITLE", @"Title for an alert asking for the user's name.")
+                                                                    message:NSLocalizedString(@"ENTER_YOUR_NAME_MESSAGE", @"Message for an alert asking for the user's name. Explain that other people will see this name in their app, and that it is only stored locally (never transmitted to the server).")
+                                                                   delegate:self
+                                                          cancelButtonTitle:nil
+                                                          otherButtonTitles:NSLocalizedString(@"OK_BTN", @"Short title for a button"), nil];
+                    alertView.alertViewStyle = UIAlertViewStylePlainTextInput;
+                    UITextField *nameField = [alertView textFieldAtIndex:0];
+                    nameField.placeholder = NSLocalizedString(@"YOUR_NAME_LABEL", @"Short label for the phrase 'Your Name'; appears next to a field asking for the user's name.");
+                    [alertView show];
+                }
             });
         });
     });
@@ -55,6 +67,14 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex != [alertView cancelButtonIndex]) {
+        UITextField *nameField = [alertView textFieldAtIndex:0];
+        [[NSUserDefaults standardUserDefaults] setObject:nameField.text forKey:SBBlanketUsernameKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
 }
 
 @end
