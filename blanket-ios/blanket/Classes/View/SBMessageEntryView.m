@@ -88,7 +88,7 @@ shouldChangeTextInRange:(NSRange)range
         return [self growingTextViewShouldReturn:growingTextView];
     NSString *newString = [growingTextView.text stringByReplacingCharactersInRange:range withString:text];
     NSUInteger length = [newString lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
-    return length <= 256;
+    return length <= BLANKET_MESSAGE_LENGTH;
 }
 
 - (void)growingTextView:(HPGrowingTextView *)growingTextView

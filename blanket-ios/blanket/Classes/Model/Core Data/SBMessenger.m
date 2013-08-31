@@ -169,7 +169,7 @@ static SBMessenger *instance;
             }
         });
     } else {
-        NSError *error = [NSError errorWithDomain:@"SBBlanketDomain"
+        NSError *error = [NSError errorWithDomain:SBBlanketDomain
                                              code:-1
                                          userInfo:@{ NSLocalizedDescriptionKey : NSLocalizedString(@"ENCRYPTION_FAILED_MESSAGE_NOT_SENT", @"String of arbitrary length for an error message.") }];
         callback(NO, error);
@@ -216,6 +216,7 @@ static SBMessenger *instance;
                 
                 // Update the latest message timestamp on the conversation
                 NSFetchRequest *fetchRequest = [NSFetchRequest fetchRequestWithEntityName:[SBMessage entityName]];
+                [fetchRequest setPredicate:[NSPredicate predicateWithFormat:@"%K == %@", SBMessageRelationships.conversation, conversation]];
                 [fetchRequest setSortDescriptors:@[[NSSortDescriptor sortDescriptorWithKey:SBMessageAttributes.timestamp
                                                                                  ascending:NO]]];
                 [fetchRequest setFetchLimit:1];

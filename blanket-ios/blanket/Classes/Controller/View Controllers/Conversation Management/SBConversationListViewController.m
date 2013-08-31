@@ -127,12 +127,20 @@ static __strong TTTTimeIntervalFormatter *timeFormatter;
 - (void)configureCell:(UITableViewCell *)cell atIndexPath:(NSIndexPath *)indexPath
 {
     SBConversation *conversation = [self.fetchedResultsController objectAtIndexPath:indexPath];
-    cell.textLabel.text = conversation.name;
     NSTimeInterval secondsSinceLastUpdate = [conversation.last_synced timeIntervalSinceDate:[NSDate date]];
-    // Server time can differ from local time; to prevent lines like 'two seconds from now' we round all positive values to zero.
-    if (secondsSinceLastUpdate > 0)
-        secondsSinceLastUpdate = 0;
-    cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"LAST_UPDATE_STRING_FORMAT", @"The phrase 'Updated [just now|3 hours ago|2 days ago]', no trailing punctuation. Time interval is automatically localized."), [timeFormatter stringForTimeInterval:secondsSinceLastUpdate]];
+
+    cell.textLabel.text = conversation.name;
+    if (secondsSinceLastUpdate > -600) {
+        NSTimeInterval secondsSinceLastMessage = [conversation.latest_message timeIntervalSinceDate:[NSDate date]];
+        // Server time can differ from local time; to prevent lines like 'two seconds from now' we round all positive values to zero.
+        if (secondsSinceLastMessage > 0)
+            secondsSinceLastMessage = 0;
+        cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"LAST_MESSAGE_STRING_FORMAT", @"The phrase 'Last message [just now|3 hours ago|2 days ago]', no trailing punctuation. Time interval is automatically localized."), [timeFormatter stringForTimeInterval:secondsSinceLastMessage]];
+        cell.detailTextLabel.textColor = [UIColor grayColor];
+    } else {
+        cell.detailTextLabel.text = [NSString stringWithFormat:NSLocalizedString(@"CONVERSATION_NEEDS_REFRESH_FORMAT", @"The phrase 'Refresh conversation; last updated [3 hours ago|2 days ago]'; displayed below a person's name when the conversation is stale. Time interval is automatically localized."), [timeFormatter stringForTimeInterval:secondsSinceLastUpdate]];
+        cell.detailTextLabel.textColor = [UIColor redColor];
+    }
     cell.imageView.hidden = !conversation.unreadValue;
 }
 

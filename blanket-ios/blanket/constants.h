@@ -17,6 +17,9 @@
 // Notification for startup; do not call any sodium functions until this notification has posted.
 #define SBSodiumInitializedNotification @"SBSodiumInitializedNotification"
 
+// Blanket error domain
+#define SBBlanketDomain @"SBBlanketDomain"
+
 // Constants related to the Blanket network protocol. Messages are 256 characters in length. Padded messages have a crypto_box_ZEROBYTES pad at the beginning
 #define BLANKET_MESSAGE_LENGTH 256
 #define BLANKET_MESSAGE_LENGTH_PADDED (BLANKET_MESSAGE_LENGTH + crypto_box_ZEROBYTES)

@@ -63,7 +63,7 @@ static SBWebServiceClient *instance;
             if ([result[@"success"] boolValue]) {
                 retVal = result[@"payload"];
             } else {
-                *error = [NSError errorWithDomain:@"SBBlanketDomain"
+                *error = [NSError errorWithDomain:SBBlanketDomain
                                              code:-1
                                          userInfo:@{ NSLocalizedDescriptionKey : [[NSBundle mainBundle] localizedStringForKey:result[@"error"] value:@"" table:nil] }];
             }
