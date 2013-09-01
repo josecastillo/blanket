@@ -298,7 +298,10 @@ static SBMessenger *instance;
     if (![_persistentStoreCoordinator addPersistentStoreWithType:NSSQLiteStoreType
                                                    configuration:nil
                                                              URL:storeURL
-                                                         options:@{NSMigratePersistentStoresAutomaticallyOption:@YES, NSInferMappingModelAutomaticallyOption:@YES}
+                                                         options:@{
+                   NSMigratePersistentStoresAutomaticallyOption : @YES,
+                         NSInferMappingModelAutomaticallyOption : @YES,
+                             NSPersistentStoreFileProtectionKey : NSFileProtectionComplete }
                                                            error:&error]) {
         /*
          Replace this implementation with code to handle the error appropriately.
